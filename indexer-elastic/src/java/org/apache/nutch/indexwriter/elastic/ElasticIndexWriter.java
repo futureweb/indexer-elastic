@@ -39,10 +39,9 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.transport.*;
-import org.elasticsearch.client.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.elasticsearch.transport.client.*;
 
 /**
  */
@@ -76,9 +75,9 @@ public class ElasticIndexWriter implements IndexWriter {
     host = job.get(ElasticConstants.HOST);
     port = job.getInt(ElasticConstants.PORT, 9300);
 
-    org.elasticsearch.common.settings.Settings settings = org.elasticsearch.common.settings.Settings.builder().put("cluster.name", "ec-cluster").build();
-    TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
-    		.addTransportAddress( new InetSocketTransportAddress(InetAddress.getLocalHost(), 9200));
+    Settings settings = Settings.builder().put("cluster.name", clusterName).build();
+    TransportClient client = new PreBuiltTransportClient(settings)
+            .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
 
     bulk = client.prepareBulk();
     defaultIndex = job.get(ElasticConstants.INDEX, "nutch");

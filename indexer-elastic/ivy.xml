@@ -28,8 +28,8 @@ language governing permissions and limitations under the License. -->
   </publications>
 
   <dependencies>
-    <dependency org="org.elasticsearch" name="elasticsearch"
-      rev="5.1.1" conf="*->default" />
+    <dependency org="org.elasticsearch" name="elasticsearch" rev="5.1.1" conf="*->default" />
+	<dependency org="org.elasticsearch.client" name="transport" rev="5.1.1"/>
   </dependencies>
 
 </ivy-module>
