@@ -76,7 +76,7 @@ public class ElasticIndexWriter implements IndexWriter {
     port = job.getInt(ElasticConstants.PORT, 9300);
 
     Settings settings = Settings.builder().put("cluster.name", clusterName).build();
-    TransportClient client = new PreBuiltTransportClient(settings)
+    client = new PreBuiltTransportClient(settings)
             .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
 
     bulk = client.prepareBulk();
