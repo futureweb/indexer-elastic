@@ -51,7 +51,7 @@ public class ElasticIndexWriter implements IndexWriter {
   private static final int DEFAULT_MAX_BULK_DOCS = 250;
   private static final int DEFAULT_MAX_BULK_LENGTH = 2500500;
 
-  private Client client;
+  private PreBuiltTransportClient client;
   private Node node;
   private String defaultIndex;
 
@@ -94,6 +94,8 @@ public class ElasticIndexWriter implements IndexWriter {
     if (type == null)
       type = "doc";
     IndexRequestBuilder request = client.prepareIndex(defaultIndex, type, id);
+
+    desc = "Id:" + id + ",type=" + type;
 
     Map<String, Object> source = new HashMap<String, Object>();
 
