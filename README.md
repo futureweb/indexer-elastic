@@ -19,24 +19,25 @@ Apache Nutch 2.3.x is currently designed to work with ElasticSearch 2.3.3. While
  1. Copy ixy.xml to $NUTCH_HOME/ivy/ivy.xml
  2. Copy indexer-elastic to $NUTCH_HOME/ivy/ivy.xml
  3. Add Following Configuration to $NUTCH_HOME/conf/nutch-site.xml in the < configuration > element
- ```html
+ 
+ ```xml
 <property>
     <name>elastic.host</name>
     <value>localhost</value>
-  </property>
-  <property>
+</property>
+<property>
     <name>elastic.port</name>
     <value>9300</value>
-  </property>
-  <property>
+</property>
+<property>
     <name>elastic.cluster</name>
     <value>elasticsearch</value>
-  </property>
-  <property>
+</property>
+<property>
     <name>elastic.index</name>
     <value>nutchindex</value>
-  </property>
-    <property>
+</property>
+<property>
   <name>elastic.max.bulk.docs</name>
   <value>250</value>
   <description>Maximum size of the bulk in number of documents.</description>
@@ -47,4 +48,5 @@ Apache Nutch 2.3.x is currently designed to work with ElasticSearch 2.3.3. While
   <description>Maximum size of the bulk in bytes.</description>
 </property>
 ```
+
  4. Run ant runtime on $NUTCH_HOME then run nutch as you normally would.
