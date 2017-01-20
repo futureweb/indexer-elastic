@@ -51,7 +51,7 @@ public class ElasticIndexWriter implements IndexWriter {
   private static final int DEFAULT_MAX_BULK_DOCS = 250;
   private static final int DEFAULT_MAX_BULK_LENGTH = 2500500;
 
-  private PreBuiltTransportClient client;
+  private TransportClient client;
   private Node node;
   private String defaultIndex;
 
@@ -74,17 +74,19 @@ public class ElasticIndexWriter implements IndexWriter {
     clusterName = job.get(ElasticConstants.CLUSTER);
     host = job.get(ElasticConstants.HOST);
     port = job.getInt(ElasticConstants.PORT, 9300);
-
-    Settings settings = Settings.builder().put("cluster.name", clusterName).build();
-    client = new PreBuiltTransportClient(settings)
-            .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
-
-    bulk = client.prepareBulk();
     defaultIndex = job.get(ElasticConstants.INDEX, "nutch");
     maxBulkDocs = job.getInt(ElasticConstants.MAX_BULK_DOCS,
         DEFAULT_MAX_BULK_DOCS);
     maxBulkLength = job.getInt(ElasticConstants.MAX_BULK_LENGTH,
         DEFAULT_MAX_BULK_LENGTH);
+
+    Settings settings = Settings.builder().put("cluster.name", clusterName).build();
+    
+    client = new PreBuiltTransportClient(settings)
+      .addTransportAddress(new InetSocketTransportAddress(InetAddress.getLocalHost(), port));
+
+    bulk = client.prepareBulk();
+    
   }
 
   @Override
@@ -94,8 +96,6 @@ public class ElasticIndexWriter implements IndexWriter {
     if (type == null)
       type = "doc";
     IndexRequestBuilder request = client.prepareIndex(defaultIndex, type, id);
-
-    desc = "Id:" + id + ",type=" + type;
 
     Map<String, Object> source = new HashMap<String, Object>();
 

@@ -58,6 +58,7 @@
     <dependency org="org.apache.hadoop" name="hadoop-hdfs" rev="2.5.2" conf="*->default"/>
     <dependency org="org.apache.hadoop" name="hadoop-mapreduce-client-core" rev="2.5.2" conf="*->default"/>
     <dependency org="org.apache.hadoop" name="hadoop-mapreduce-client-jobclient" rev="2.5.2" conf="*->default"/>
+    <dependency org="io.netty" name="netty-all" rev="4.1.6.Final"/>
     <!-- End of Hadoop Dependencies -->
 
     <dependency org="com.ibm.icu" name="icu4j" rev="55.1" />

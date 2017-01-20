@@ -19,7 +19,7 @@ language governing permissions and limitations under the License. -->
   </info>
 
   <configurations>
-    <include file="../../..//ivy/ivy-configurations.xml" />
+    <include file="../../../ivy/ivy-configurations.xml" />
   </configurations>
 
   <publications>
@@ -29,7 +29,11 @@ language governing permissions and limitations under the License. -->
 
   <dependencies>
     <dependency org="org.elasticsearch" name="elasticsearch" rev="5.1.1" conf="*->default" />
-	<dependency org="org.elasticsearch.client" name="transport" rev="5.1.1"/>
+	  <dependency org="org.elasticsearch.client" name="transport" rev="5.1.1"/>
+    <dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.7" />
+    <dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.7" />
+    <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.8.1"/>
+    <dependency org="io.netty" name="netty-all" rev="4.1.6.Final"/>
   </dependencies>
 
 </ivy-module>
