@@ -83,7 +83,7 @@ public class ElasticIndexWriter implements IndexWriter {
     Settings settings = Settings.builder().put("cluster.name", clusterName).build();
     
     client = new PreBuiltTransportClient(settings)
-      .addTransportAddress(new InetSocketTransportAddress(InetAddress.getLocalHost(), port));
+      .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
 
     bulk = client.prepareBulk();
     

@@ -18,7 +18,8 @@ Apache Nutch 2.3.x is currently designed to work with ElasticSearch 2.3.3. While
 
  1. Copy ixy.xml to $NUTCH_HOME/ivy/ivy.xml
  2. Copy indexer-elastic to $NUTCH_HOME/ivy/ivy.xml
- 3. Add Following Configuration to $NUTCH_HOME/conf/nutch-site.xml in the < configuration > element
+ 3. Copy default.properties to $NUTCH_HOME/
+ 4. Add Following Configuration to $NUTCH_HOME/conf/nutch-site.xml in the < configuration > element
  
  ```xml
 <property>
@@ -49,4 +50,4 @@ Apache Nutch 2.3.x is currently designed to work with ElasticSearch 2.3.3. While
 </property>
 ```
 
- 4. Run ant runtime on $NUTCH_HOME then run nutch as you normally would.
+ 5. Run ant runtime on $NUTCH_HOME then run nutch as you normally would.
