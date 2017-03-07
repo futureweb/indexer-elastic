@@ -17,7 +17,7 @@ Apache Nutch 2.3.x is currently designed to work with ElasticSearch 2.3.3. While
 ~~~$NUTCH_HOME refers to the extracted location of your Nutch instance. 
 
  1. Copy ixy.xml to $NUTCH_HOME/ivy/ivy.xml
- 2. Copy indexer-elastic to $NUTCH_HOME/ivy/ivy.xml
+ 2. Copy indexer-elastic to $NUTCH_HOME/src/plugin/
  3. Copy default.properties to $NUTCH_HOME/
  4. Add Following Configuration to $NUTCH_HOME/conf/nutch-site.xml in the < configuration > element
  
