@@ -28,6 +28,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.indexer.IndexWriter;
 import org.apache.nutch.indexer.NutchDocument;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.ActionFuture;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -37,17 +38,15 @@ import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.node.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.esotericsoftware.minlog.Log;
 import org.elasticsearch.transport.client.*;
 
 /**
  */
 public class ElasticIndexWriter implements IndexWriter {
-  public static Logger LOG = LoggerFactory.getLogger(ElasticIndexWriter.class);
-
+  
   private static final int DEFAULT_MAX_BULK_DOCS = 250;
   private static final int DEFAULT_MAX_BULK_LENGTH = 2500500;
 
@@ -58,7 +57,7 @@ public class ElasticIndexWriter implements IndexWriter {
   private Configuration config;
 
   private BulkRequestBuilder bulk;
-  private ListenableActionFuture<BulkResponse> execute;
+  private ActionFuture<BulkResponse> execute;
   private int port = -1;
   private String host = null;
   private String clusterName = null;
@@ -83,7 +82,7 @@ public class ElasticIndexWriter implements IndexWriter {
     Settings settings = Settings.builder().put("cluster.name", clusterName).build();
     
     client = new PreBuiltTransportClient(settings)
-      .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
+      .addTransportAddress(new TransportAddress(InetAddress.getByName(host), port));
 
     bulk = client.prepareBulk();
     
@@ -120,7 +119,7 @@ public class ElasticIndexWriter implements IndexWriter {
     bulkDocs++;
 
     if (bulkDocs >= maxBulkDocs || bulkLength >= maxBulkLength) {
-      LOG.info("Processing bulk request [docs = " + bulkDocs + ", length = "
+      Log.info("Processing bulk request [docs = " + bulkDocs + ", length = "
           + bulkLength + ", total docs = " + indexedDocs
           + ", last doc in bulk = '" + id + "']");
       // Flush the bulk of indexing requests
@@ -168,7 +167,7 @@ public class ElasticIndexWriter implements IndexWriter {
         }
       }
       long msWaited = System.currentTimeMillis() - beforeWait;
-      LOG.info("Previous took in ms " + actionGet.getTookInMillis()
+      Log.info("Previous took in ms " + actionGet.getTook().getMillis()
           + ", including wait " + msWaited);
       execute = null;
     }
@@ -190,12 +189,12 @@ public class ElasticIndexWriter implements IndexWriter {
   @Override
   public void close() throws IOException {
     // Flush pending requests
-    LOG.info("Processing remaining requests [docs = " + bulkDocs
+    Log.info("Processing remaining requests [docs = " + bulkDocs
         + ", length = " + bulkLength + ", total docs = " + indexedDocs + "]");
     createNewBulk = false;
     commit();
     // flush one more time to finalize the last bulk
-    LOG.info("Processing to finalize last execute");
+    Log.info("Processing to finalize last execute");
     createNewBulk = false;
     commit();
 
@@ -232,7 +231,7 @@ public class ElasticIndexWriter implements IndexWriter {
     if (StringUtils.isBlank(cluster) && StringUtils.isBlank(host)) {
       String message = "Missing elastic.cluster and elastic.host. At least one of them should be set in nutch-site.xml ";
       message += "\n" + describe();
-      LOG.error(message);
+      Log.error(message);
       throw new RuntimeException(message);
     }
   }
